@@ -1,7 +1,8 @@
 import { 
     newUser, 
     getUsers, 
-    getUserById 
+    getUserById,
+    deleteUser,
 } from "../services/userService.js"
 
 
@@ -36,13 +37,24 @@ export async function getUsersController(req, res) {
 
 export async function getUserByIdController(req, res) {
     try{
-        console.log("PARAMS:", req.params)
         const user = await getUserById(req.params.id);
         return res.status(200).json(user)
     }catch(e){
         console.error(e);
         return res.status(500).json({
             message: "Erro ao buscar usuário."
+        });
+    }
+}
+
+export async function DeleteUserController(req, res) {
+    try {
+        const user = await deleteUser(req.params.id);
+        return res.status(200).json(user)
+    }catch (e) {
+        console.error(e);
+        return res.status(500).json({
+            message: "Erro ao deletar usuário."
         });
     }
 }
