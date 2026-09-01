@@ -28,8 +28,8 @@ export async function getUserById(id) {
     return usuarios;
 };
 
-/*export async function updateUserById(dados) {
-    const updateUserById = await prisma.user.update({
+export async function deleteUser(id) {
+    const deleteUsers = await prisma.user.delete({
         where: {
             id: dados.id
         },
@@ -37,5 +37,5 @@ export async function getUserById(id) {
             id: dados.id
         }
     })
-    return updateUserById;
-};*/
+    return deleteUsers;
+};
