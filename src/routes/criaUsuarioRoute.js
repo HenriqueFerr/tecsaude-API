@@ -4,9 +4,8 @@ import {
     newUserController,
     getUsersController,
     getUserByIdController,
-    deleteUser,
+    DeleteUserController,
 } from "../controllers/criaUsuarioController.js"
-import { deleteUser } from "../services/userService.js";
 
 const router = Router();
 
@@ -14,7 +13,7 @@ const router = Router();
 router.post("/", newUserController);
 router.get("/", getUsersController);
 router.get("/:id", getUserByIdController);
-router.get("/", deleteUser)
+router.get("/delete:id", DeleteUserController)
 
 
 
