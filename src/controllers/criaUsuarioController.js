@@ -2,13 +2,13 @@ import {
     newUser, 
     getUsers, 
     getUserById,
+    updateUser,
     deleteUser,
 } from "../services/userService.js"
 
 
 export async function newUserController(req, res) {
     try {
-        console.log("BODY RECEBIDO", req.body);
         const user = await newUser(req.body);
 
         return res.status(200).json(user);
@@ -47,7 +47,22 @@ export async function getUserByIdController(req, res) {
     }
 }
 
-export async function DeleteUserController(req, res) {
+export async function updateUserController (req, res) {
+    try {
+        const user = await updateUser(
+            req.params.id,
+            req.body
+        );
+        return res.status(200).json(user);
+    }catch (e){
+        console.log(e)
+        return res.status(500).json({
+            message: "Erro ao atualizar o usuário"
+        });
+    }
+}
+
+export async function deleteUserController(req, res) {
     try {
         const user = await deleteUser(req.params.id);
         return res.status(200).json(user)

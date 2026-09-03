@@ -9,7 +9,8 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/api/usuarios", criaUsuarioRoute)
+app.use("/api/users", criaUsuarioRoute)
+
 
 app.get("/", (req, res) => {
     res.json({

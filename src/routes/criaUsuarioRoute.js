@@ -4,7 +4,8 @@ import {
     newUserController,
     getUsersController,
     getUserByIdController,
-    DeleteUserController,
+    updateUserController,
+    deleteUserController,
 } from "../controllers/criaUsuarioController.js"
 
 const router = Router();
@@ -13,7 +14,8 @@ const router = Router();
 router.post("/", newUserController);
 router.get("/", getUsersController);
 router.get("/:id", getUserByIdController);
-router.get("/delete:id", DeleteUserController)
+router.put("/:id", updateUserController)
+router.delete("/:id", deleteUserController)
 
 
 
