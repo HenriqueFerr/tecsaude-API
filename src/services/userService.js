@@ -1,7 +1,7 @@
 import prisma from "../config/prismaConfig.js";
 
 export async function newUser(dados) {
-    const usuarios = await prisma.user.create({
+    const user = await prisma.user.create({
         data: {
             name: dados.name,
             email: dados.email,
@@ -9,33 +9,44 @@ export async function newUser(dados) {
         }
     });
 
-    return usuarios;
+    return user;
 };
 
 export async function getUsers() {
-    const usuarios = await prisma.user.findMany();
+    const user = await prisma.user.findMany();
 
-    return usuarios;
+    return user;
 }
 
 export async function getUserById(id) {
-    const usuarios = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             id: Number(id)
         }
     });
 
-    return usuarios;
+    return user;
 };
 
-export async function deleteUser(id) {
-    const deleteUsers = await prisma.user.delete({
+export async function updateUser(id,dados) {
+    const user = await prisma.user.update({
         where: {
-            id: dados.id
+            id: Number(id)
         },
         data: {
-            id: dados.id
+            name: dados.name,
+            email: dados.email,
+            password: dados.password
         }
-    })
-    return deleteUsers;
+    });
+    return user;
+}
+
+export async function deleteUser(id) {
+    const user = await prisma.user.delete({
+        where: {
+            id: Number(id)
+        }
+    });
+    return user;
 };
