@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 
-import criaUsuarioRoute from "./routes/criaUsuarioRoute.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/api/users", criaUsuarioRoute)
+app.use("/api/users", userRoutes)
 
 
 app.get("/", (req, res) => {
