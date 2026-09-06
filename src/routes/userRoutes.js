@@ -8,14 +8,16 @@ import {
     deleteUserController,
 } from "../controllers/userController.js"
 
+import { validateId } from "../middlewares/validateIdMiddleware.js"
+
 const router = Router();
 
 
 router.post("/", newUserController);
 router.get("/", getUsersController);
-router.get("/:id", getUserByIdController);
-router.put("/:id", updateUserController)
-router.delete("/:id", deleteUserController)
+router.get("/:id", validateId, getUserByIdController);
+router.put("/:id", validateId, updateUserController)
+router.delete("/:id", validateId, deleteUserController)
 
 
 
