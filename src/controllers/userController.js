@@ -61,11 +61,12 @@ export async function updateUserController (req, res) {
             req.params.id,
             req.body
         );
-        if (!usuario) {
+        if (!user) {
             return res.status(404).json({
                 message: "Usuário não encontrado."
             });
         }
+
         return res.status(200).json(user);
     }catch (e){
         console.log(e)
@@ -78,6 +79,12 @@ export async function updateUserController (req, res) {
 export async function deleteUserController(req, res) {
     try {
         const user = await deleteUser(req.params.id);
+
+        if(!user) {
+            return res.status(404).json({
+                message: "Usuário não encontrado."
+            });
+        }
         return res.status(200).json(user)
     }catch (e) {
         console.error(e);

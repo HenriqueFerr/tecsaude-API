@@ -1,8 +1,18 @@
 import bcryp from "bcrypt";
 import prisma from "../config/prismaConfig.js";
 
+function removePassword(user) {
+    const {password, ...userWithoutPassword } = user;
+
+    return userWithoutPassword
+}
+
 export async function newUser(dados) {
-    const passwordHash = await bcryp.hash(dados.password, 10)
+    const passwordHash = await bcryp.hash(
+        dados.password, 
+        10
+    );
+
     const user = await prisma.user.create({
         data: {
             name: dados.name,
@@ -11,14 +21,13 @@ export async function newUser(dados) {
         }
     });
 
-    const { password, ...userSemSenha } = user
-
-    return userSemSenha;
+    return userWithoutPassword(user);
 };
 
 export async function getUsers() {
-    const user = await prisma.user.findMany();
-    return user;
+    const users = await prisma.user.findMany();
+    
+    return users.map(removePassword)
 }
 
 export async function getUserById(id) {
@@ -32,17 +41,17 @@ export async function getUserById(id) {
         return null;
     }
 
-    return user;
+    return removePassword(user);
 };
 
 export async function updateUser(id,dados) {
-    const notAUser = await prisma.user.findUnique ({
+    const existingUser = await prisma.user.findUnique ({
         where: {
             id
         }
     });
 
-    if (!notAUser) {
+    if (!existingUser) {
         return null
     }
 
@@ -54,18 +63,29 @@ export async function updateUser(id,dados) {
         },
         data: {
             name: dados.name,
-            email: Date.email,
+            email: dados.email,
             password: passwordHash
         }
     });
-    return removePassword
+    return removePassword(user)
 }
 
 export async function deleteUser(id) {
-    const user = await prisma.user.delete({
+    const existingUser = await prisma.user.findUnique({
         where: {
-            id: Number(id)
+            id
         }
     });
-    return user;
+
+    if (!existingUser) {
+        return null;
+    }
+
+    const user = await prisma.user.delete({
+        where: {
+            id
+        }
+    });
+
+    return removePassword(user)
 };
