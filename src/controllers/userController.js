@@ -11,6 +11,12 @@ export async function newUserController(req, res) {
     try {
         const user = await newUser(req.body);
 
+        if(user.error === "EMAIL_ALREADY_EXIST") {
+            return res.status(409).json({
+                message: "Email já existente."
+            });
+        }
+
         return res.status(201).json(user);
     }catch (e) {
         console.error(e);
@@ -65,6 +71,12 @@ export async function updateUserController (req, res) {
             return res.status(404).json({
                 message: "Usuário não encontrado."
             });
+        }
+
+        if (user.error === "EMAIL_ALREADY_EXIST") {
+            return res.status(409).json({
+                message: "Email já cadastrado."
+            })
         }
 
         return res.status(200).json(user);

@@ -8,6 +8,19 @@ function removePassword(user) {
 }
 
 export async function newUser(dados) {
+
+    const existingUser = await prisma.user.findUnique({
+        where: {
+            email: dados.email
+        }
+    });
+
+    if (existingUser) {
+        return {
+            error: "EMAIL_ALREADY_EXIST"
+        }
+    }
+
     const passwordHash = await bcryp.hash(
         dados.password, 
         10
@@ -53,6 +66,18 @@ export async function updateUser(id,dados) {
 
     if (!existingUser) {
         return null
+    }
+
+    const userWithSameEmail = await prisma.user.findUnique({
+        where: {
+            email: dados.email
+        }
+    });
+
+    if ( userWithSameEmail && userWithSameEmail !== id) {
+        return {
+            error: "EMAIL_ALREADY_EXIST"
+        };
     }
 
     const passwordHash = await bcryp.hash(dados.password, 10);
