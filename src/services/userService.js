@@ -1,5 +1,6 @@
 import bcryp from "bcrypt";
 import prisma from "../config/prismaConfig.js";
+import { AppError } from "../utils/AppError.js"
 
 function removePassword(user) {
     const {password, ...userWithoutPassword } = user;
@@ -16,9 +17,10 @@ export async function newUser(dados) {
     });
 
     if (existingUser) {
-        return {
-            error: "EMAIL_ALREADY_EXIST"
-        }
+        throw new AppError(
+            "Email já cadastrado.",
+            409
+        );
     }
 
     const passwordHash = await bcryp.hash(
@@ -75,9 +77,10 @@ export async function updateUser(id,dados) {
     });
 
     if ( userWithSameEmail && userWithSameEmail !== id) {
-        return {
-            error: "EMAIL_ALREADY_EXIST"
-        };
+        throw new AppError (
+            "Email já cadastrado",
+            409
+        )
     }
 
     const passwordHash = await bcryp.hash(dados.password, 10);

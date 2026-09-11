@@ -13,13 +13,6 @@ export async function newUserController(req, res, next) {
     try {
         const user = await newUser(req.body);
 
-        if(user.error === "EMAIL_ALREADY_EXIST") {
-            throw new AppError (
-                "Email já cadastrado.",
-                409
-            )
-        }
-
         return res.status(201).json(user);
     }catch (e) {
         next(e)
@@ -64,13 +57,6 @@ export async function updateUserController (req, res, next) {
                 "usuário não encontrado.",
                 404
             );
-        }
-
-        if (user.error === "EMAIL_ALREADY_EXIST") {
-            throw new AppError(
-                "Email já cadastrado",
-                409
-            )
         }
 
         return res.status(200).json(user);
