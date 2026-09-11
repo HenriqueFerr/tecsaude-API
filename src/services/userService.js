@@ -36,7 +36,7 @@ export async function newUser(dados) {
         }
     });
 
-    return userWithoutPassword(user);
+    return removePassword(user);
 };
 
 export async function getUsers() {
