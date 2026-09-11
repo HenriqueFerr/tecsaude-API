@@ -53,7 +53,10 @@ export async function getUserById(id) {
     });
 
     if (!user) {
-        return null;
+        throw new AppError(
+            "Usuário não encontrado",
+            404
+        );
     }
 
     return removePassword(user);
@@ -67,7 +70,10 @@ export async function updateUser(id,dados) {
     });
 
     if (!existingUser) {
-        return null
+        throw new AppError(
+            "Usuário não encontrado.",
+            404
+        );
     }
 
     const userWithSameEmail = await prisma.user.findUnique({
@@ -106,7 +112,10 @@ export async function deleteUser(id) {
     });
 
     if (!existingUser) {
-        return null;
+        throw new AppError(
+            "Usuário não encontrado",
+            404
+        );
     }
 
     const user = await prisma.user.delete({
